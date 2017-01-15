@@ -1,0 +1,22 @@
+sudo: required
+dist: trusty
+language: node_js
+node_js:
+- '4.5'
+install:
+- export DISPLAY=:99.0
+- sh -e /etc/init.d/xvfb start
+- wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | sudo apt-key
+  add -
+- sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable
+  main" >> /etc/apt/sources.list.d/google-chrome.list'
+- sudo apt-get update -q
+- sudo apt-get install -q google-chrome-stable
+before_script:
+- npm install
+script:
+- npm run test-single-run
+- "(npm start > /dev/null &) && (npm run protractor)"
+notifications:
+  slack:
+    secure: gPISADng/EMBPnJ71faT1mz/oRsWAVJ9WfG0tBJmQA0f34UYakjBW5qE0u540nUvP4UBK+oqZkJhHzz8LwRiStAaj4sqKwHzCV2ifJm/XKxAn8DFY7MUy0S6C/hmHwRus3VvLFo0oi/9cIe9PXh15t08wX0f2Y2pGN0Wz/R/wWoGprumHKZ1XJd1nwxQ71yfW+knO71uKtBjVcX1c1x8xIDa1vl3k2tUnY+s8bJCs3I2OVFgCbdC2qcqSli0TmyBt05slFk5MfulKdyA3rQfRzA1vKqjJKpDsNNIMndwjqxCrmzDaRGvLV0YtGx1xFN2vrnbOKodxhhEilXN9u+xNicWH2hIFDozMuyseHuxxXmw9wRPiY4SpG0+xmY7HWTRFGhTM5ygBDv1hE4F/p5n4o3t6hJ4UkmnEgbGMLw7EAP869NH5CZOsG6U1cIz0H/iy4fefjLs1pqs5FAVGm4tHN8XGQOLxWRO8L4o3Jb0yjjlH4Fhwex/MkIgEoMlGsC+BUUHDKIJZ6HS8hhMnQuQIr6idkpYUXz2iNqnBLQ4ia6qjjGHATusWGZ4zXg3gF67DHUx4SgnZaZGIzOe4VfzHyh4Ja5aEaZgB8/e06tI76obDjdzxZRm9bgVj/cb4WMUOItmqVWJ4lk9TmXWEuFPmA/dUo3xNRdLBFYa1puJcXA=
